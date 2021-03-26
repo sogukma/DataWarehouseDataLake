@@ -1,0 +1,6 @@
+FROM apache/airflow:2.0.1
+RUN pip install apache-airflow-providers-microsoft-azure==1.2.0rc1
+# this Dockerfile is a fix for the airflow error message
+#     WARNING - Exception when importing 'airflow.providers.microsoft.azure.hooks.wasb.WasbHook' from
+#     'apache-airflow-providers-microsoft-azure' package: No module named 'azure.storage.blob'
+# see https://github.com/apache/airflow/issues/14266#issuecomment-796923376
