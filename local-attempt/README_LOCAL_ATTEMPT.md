@@ -5,7 +5,7 @@ This is a test environment for docker compose, dbt, and airflow.
 * 2 CPU kernels
 
 # Initializing Environment
-Everything described is only needs for the first time.
+Everything described in this chapter is only needs for the first time.
 
 ## avoid sudo
 If you have to use `sudo` for your docker commands, you should  open a shell and run:
