@@ -1,0 +1,12 @@
+apache-airflow==2.0.1
+
+# we need to specify a dbt version above 0.19.0 since
+# dbt 0.19.0 and airflow 2.0.1 have incompatible
+# dependency version of the werkzeug package
+dbt~=0.19.1rc2
+
+matplotlib
+numpy
+pandas
+psycopg2-binary
+requests
