@@ -17,6 +17,9 @@ Now you can run docker commands without `sudo`.
 This also seems to be neeeded to run docker compose.
 
 ## initialize airflow environment
+The following instructions are based on 
+https://airflow.apache.org/docs/apache-airflow/stable/start/docker.html
+
 On Linux, open a shell and run:
 ```bash
 AIRFLOW_DIRECTORY=/var/airflow
@@ -42,8 +45,6 @@ Then, run:
 ```bash
 docker-compose up airflow-init
 ```
-
-Based on https://airflow.apache.org/docs/apache-airflow/stable/start/docker.html
 
 
 # Use Environment
