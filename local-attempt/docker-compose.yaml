@@ -38,7 +38,7 @@ x-airflow-common:
     AIRFLOW__WEBSERVER__WORKER_REFRESH_INTERVAL: 1800 # Restart workers every 30min instead of 30seconds
     AIRFLOW__WEBSERVER__WEB_SERVER_WORKER_TIMEOUT: 300 # Kill workers if they don't start within 5min instead of 2min
   volumes:
-    - /var/airflow/dags:/opt/airflow/dags
+    - ./dags:/opt/airflow/dags
     - /var/airflow/logs:/opt/airflow/logs
     - /var/airflow/plugins:/opt/airflow/plugins
   user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
@@ -117,11 +117,6 @@ services:
       timeout: 10s
       retries: 5
     restart: on-failure
-
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile.app
 
 volumes:
   postgres-db-volume:
