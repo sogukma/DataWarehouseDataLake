@@ -39,6 +39,7 @@ x-airflow-common:
     AIRFLOW__WEBSERVER__WEB_SERVER_WORKER_TIMEOUT: 300 # Kill workers if they don't start within 5min instead of 2min
   volumes:
     - ./dags:/opt/airflow/dags
+    - ./data:/opt/airflow/data
     - /var/airflow/logs:/opt/airflow/logs
     - /var/airflow/plugins:/opt/airflow/plugins
   user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
