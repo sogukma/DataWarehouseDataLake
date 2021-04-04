@@ -85,7 +85,7 @@ def data_lake_etl():
 
             sentiments.append(sentiment)
             
-        transformed_reviews["sentiment"] = sentiments
+        transformed_reviews["sentiments"] = sentiments
             
         return transformed_reviews
 
