@@ -2,10 +2,13 @@ import logging
 
 from airflow.decorators import dag, task
 from airflow.utils.dates import days_ago
+import nltk
+from nltk.sentiment import SentimentIntensityAnalyzer
 import pandas as pd
 
 
-DATA_DIRECTORY = "/opt/airflow/data"
+ETL_DATA_DIRECTORY = "/opt/airflow/data"
+NLTK_DATA_DIRECTORY = "/tmp"
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +18,7 @@ def extract_reviews(city: str) -> pd.DataFrame:
     Extract reviews from a CSV file.
     """
     reviews = pd.read_csv(
-        f"{DATA_DIRECTORY}/{city}/reviews.csv",
+        f"{ETL_DATA_DIRECTORY}/{city}/reviews.csv",
         parse_dates=["date"],
         dtype={
             "reviewer_name": "string",
@@ -29,13 +32,11 @@ def extract_reviews(city: str) -> pd.DataFrame:
     return reviews
 
 
-
-
 @dag(
-    default_args={'owner': 'airflow'},
+    default_args={"owner": "airflow"},
     schedule_interval=None,
     start_date=days_ago(2),
-    tags=['example'],
+    tags=["example"],
 )
 def data_lake_etl():
     """
@@ -61,10 +62,32 @@ def data_lake_etl():
     @task()
     def transform(raw_reviews: pd.DataFrame) -> pd.DataFrame:
         """
-        Applies machine learning on the reviews.
+        Applies sentiment analysis on the reviews.
         """
-        # TODO implement natural language processing tranformation on reviews
-        return raw_reviews
+        transformed_reviews = raw_reviews.copy()
+
+        # prepare the sentiment analyzer
+        nltk.download("vader_lexicon", download_dir=NLTK_DATA_DIRECTORY)
+        nltk.data.path.append(NLTK_DATA_DIRECTORY)
+        sentiment_analyzer = SentimentIntensityAnalyzer()
+
+        sentiments = []
+        for _, review in transformed_reviews["comments"].items():
+            sentiment_compound = sentiment_analyzer.polarity_scores(review)["compound"]
+    
+            # decide sentiment as positive, negative and neutral
+            if sentiment_compound >= 0.05:
+                sentiment = "positive"
+            elif sentiment_compound <= - 0.05:
+                sentiment = "negative"
+            else:
+                sentiment = "neutral"
+
+            sentiments.append(sentiment)
+            
+        transformed_reviews["sentiment"] = sentiments
+            
+        return transformed_reviews
 
     @task()
     def load(transformed_reviews: pd.DataFrame) -> None:
@@ -72,7 +95,7 @@ def data_lake_etl():
         Save the transformed reviews as a source for the data warehouse.
         """
         transformed_reviews.to_csv(
-            f"{DATA_DIRECTORY}/transformed_reviews.csv",
+            f"{ETL_DATA_DIRECTORY}/transformed_reviews.csv",
             index=False,
         )
 
