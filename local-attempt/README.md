@@ -29,7 +29,6 @@ AIRFLOW_DIRECTORY=/var/airflow
 sudo mkdir $AIRFLOW_DIRECTORY
 sudo chown $(id -u):$(id -g) $AIRFLOW_DIRECTORY
 
-mkdir ./dags
 mkdir $AIRFLOW_DIRECTORY/logs
 mkdir $AIRFLOW_DIRECTORY/plugins
 
