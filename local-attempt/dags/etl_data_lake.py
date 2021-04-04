@@ -58,7 +58,7 @@ def data_lake_etl():
 
         return reviews
 
-    @task(multiple_outputs=True)
+    @task()
     def transform(raw_reviews: pd.DataFrame) -> pd.DataFrame:
         """
         Applies machine learning on the reviews.
