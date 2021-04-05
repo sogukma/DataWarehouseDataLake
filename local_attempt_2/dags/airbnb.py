@@ -131,13 +131,20 @@ def taskflow_airbnb2():
     def load_into_data_mart_rising_used_listings_over_time():
         
 
-        df = pd.read_sql_query("select count(listing_id), cast(calendar.date as date) as date from calendar where available = 't' group by date ",con=engine)
+        df = pd.read_sql_query("select count(listing_id), cast(calendar.date as date) as date from calendar where available = 'f' group by date ",con=engine)
         write_in_db(df, "data_mart_rising_used_listings_over_time")
 
     @task()
     def load_into_data_mart_rising_used_listings_in_neighborhoods_over_time():
-        df = pd.read_sql_query("select neighbourhood_group_cleansed, cast(calendar.date as date) as date, count(neighbourhood_group_cleansed) as c_neighborhood from listings inner join calendar on listings.id = calendar.listing_id where available = 't' and neighbourhood_group_cleansed is not null group by date, neighbourhood_group_cleansed",con=engine)
+        df = pd.read_sql_query("select neighbourhood_group_cleansed, cast(calendar.date as date) as date, count(neighbourhood_group_cleansed) as c_neighborhood from listings inner join calendar on listings.id = calendar.listing_id where available = 'f' and neighbourhood_group_cleansed is not null group by date, neighbourhood_group_cleansed",con=engine)
         write_in_db(df, "data_mart_rising_used_listings_in_neighborhoods_over_time")
+
+
+    @task()
+    def load_into_data_mart_performance_apartments_houses():
+        df = pd.read_sql_query("select property_type, room_type, cast(calendar.date as date) as date, count(*) as c from listings inner join calendar on listings.id = calendar.listing_id where available = 'f' group by date, property_type, room_type",con=engine)
+        write_in_db(df, "data_mart_performance_apartments_houses")
+        return 0
 
     #taskflow:
     extract_listings = extract_listings()
@@ -149,7 +156,9 @@ def taskflow_airbnb2():
     load_into_data_mart_rising_used_listings_over_time = load_into_data_mart_rising_used_listings_over_time()
     load_into_data_mart_rising_used_listings_in_neighborhoods_over_time = load_into_data_mart_rising_used_listings_in_neighborhoods_over_time()
 
-    extract_listings >>  transform >> load_into_data_warehouse >> [load_into_data_mart_neighborhood, load_into_data_mart_score_for_bathrooms_bedrooms_ratio, load_into_data_mart_rising_used_listings_over_time, load_into_data_mart_rising_used_listings_in_neighborhoods_over_time]
-    extract_and_load_into_data_warehouse_calendar >> [load_into_data_mart_neighborhood, load_into_data_mart_score_for_bathrooms_bedrooms_ratio, load_into_data_mart_rising_used_listings_over_time, load_into_data_mart_rising_used_listings_in_neighborhoods_over_time]
+    load_into_data_mart_performance_apartments_houses = load_into_data_mart_performance_apartments_houses()
+
+    extract_listings >>  transform >> load_into_data_warehouse >> [load_into_data_mart_neighborhood, load_into_data_mart_score_for_bathrooms_bedrooms_ratio, load_into_data_mart_rising_used_listings_over_time, load_into_data_mart_rising_used_listings_in_neighborhoods_over_time, load_into_data_mart_performance_apartments_houses]
+    extract_and_load_into_data_warehouse_calendar >> [load_into_data_mart_neighborhood, load_into_data_mart_score_for_bathrooms_bedrooms_ratio, load_into_data_mart_rising_used_listings_over_time, load_into_data_mart_rising_used_listings_in_neighborhoods_over_time, load_into_data_mart_performance_apartments_houses]
 taskflow_airbnb2 = taskflow_airbnb2()
 taskflow_airbnb2
