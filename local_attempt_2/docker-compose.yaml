@@ -50,6 +50,14 @@ x-airflow-common:
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
     AIRFLOW__CORE__LOAD_EXAMPLES: 'true'
     AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
+    
+    #   make airflow faster, see https://github.com/puckel/docker-airflow/issues/233
+    AIRFLOW__SCHEDULER__MIN_FILE_PROCESS_INTERVAL: 60 # Prevent airflow from reloading the dags all the time and set. This is the main setting that reduces CPU load in the scheduler
+    AIRFLOW__SCHEDULER__SCHEDULER_MAX_THREADS: 1 # This should be set to (CPU Cores - 1)
+    AIRFLOW__WEBSERVER__WORKERS: 2 # 2 * NUM_CPU_CORES + 1
+    AIRFLOW__WEBSERVER__WORKER_REFRESH_INTERVAL: 1800 # Restart workers every 30min instead of 30seconds
+    AIRFLOW__WEBSERVER__WEB_SERVER_WORKER_TIMEOUT: 300 # Kill workers if they don't start within 5min instead of 2min
+    
   volumes:
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
