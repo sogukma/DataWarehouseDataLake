@@ -15,5 +15,8 @@ The project was implemented in Apache Airflow using PostgreSQL as the database.
 wait until the whole airflow environment is downloaded and started.
 - ...this is only necessary for the first start. For later starts, you can start the service with ```docker-commpose up```
 - Go to ```localhost:8080``` in your webbrowser to see the pipeline. In there you will find the pipeline named "taskflow_airbnb2". Click on it to see the individual steps of the pipeline.
-- You can develop the pipeline further by simply opening the project folder "local_attempt_2" in Visual Studio Code or PyCharm.
 - with ```docker-compose down``` you can close Airflow
+
+### Project files
+- ```/dags/airbnb.py``` - ETL data pipeline including data warehouse and data marts, implemented in Apache Airflow. Processes Airbnb data and weather data.
+- ...you can develop the pipeline further by simply opening the project folder "local_attempt_2" in Visual Studio Code or PyCharm. Go there on ```/dags/airbnb.py``` to edit the data pipeline.
