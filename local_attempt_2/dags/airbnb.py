@@ -50,9 +50,11 @@ def taskflow_airbnb2():
 
     @task()
     def extract_transform_load_weather_data():
-       
+        # Source weather_boston: https://www.kaggle.com/jqpeng/boston-weather-data-jan-2013-apr-2018
         weather_boston = "./data/Boston/Boston weather_clean.csv"
+        # Source weather_seattle: https://github.com/plotly/datasets/blob/master/2016-weather-data-seattle.csv
         weather_seattle = "./data/Seattle/2016-weather-data-seattle.csv"
+        # Source weather_seattle2: https://www.kaggle.com/rtatman/did-it-rain-in-seattle-19482017
         weather_seattle2 = "./data/Seattle/seattleWeather_1948-2017.csv"
 
         #weather_seattle_two_df = pd.read_csv(weather_seattle2) \
