@@ -8,7 +8,7 @@ The project was implemented in Apache Airflow using PostgreSQL as the database.
 - Airbnb data from Boston and Seattle (including housings, transaction log on rentals and reviews of the housings)
 - Weather data from Boston and Seattle
 
-### Set up
+### Set up Apache Airflow and PostgreSQL in Docker
 - Use Linux or a Linux capable command shell
 - Download this project folder and navigate to this "local_attempt_2" folder
 - Write ``` docker-compose up airflow-init ``` and 
