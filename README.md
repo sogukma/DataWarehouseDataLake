@@ -5,9 +5,9 @@
 - Module:		Data Warehouse and Data Lake Systems
 - Date:		April 21, 2021
 
-In this project, a data pipeline was developed in Apache Airflow in combination with the PostgreSQL database.
+In this project, a data pipeline was developed in Apache Airflow in combination with the PostgreSQL database. The intention was to explore the real estate market in Seattle and Boston with the given data in order to establish a suitable investment plan in these areas.
 
-## prerequisites
+## Prequisites
 - around 23 GB of free space
 - 4GB Ram
 - Linux or Linux capable shell-environmnet
@@ -17,5 +17,5 @@ In this project, a data pipeline was developed in Apache Airflow in combination 
 
 ## Folder directory
 - ```/airbnb anaylsis r.R``` - Pre-analysis of Airbnb data
-- ```/airbnb visualization.pbix``` - Visualisations of the data in PowerBI
 - ```/local_attempt_2/dags/airbnb.py``` - ETL data pipeline including data warehouse and data marts, implemented in Apache Airflow. Processes Airbnb data and weather data.
+- ```/airbnb visualization.pbix``` - Visualisations of the data in PowerBI
