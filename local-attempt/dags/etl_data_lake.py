@@ -78,7 +78,7 @@ def data_lake_etl():
             # decide sentiment as positive, negative and neutral
             if sentiment_compound >= 0.05:
                 sentiment = "positive"
-            elif sentiment_compound <= - 0.05:
+            elif sentiment_compound <= -0.05:
                 sentiment = "negative"
             else:
                 sentiment = "neutral"
